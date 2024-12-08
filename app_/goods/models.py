@@ -31,6 +31,7 @@ class Products(models.Model):
         db_table = 'product'
         verbose_name = 'Продукт'
         verbose_name_plural = 'Продукты'
+        ordering = ("id",)
     
     def display_id(self):
         return f"{self.id:05}" #добавления нулей в id
