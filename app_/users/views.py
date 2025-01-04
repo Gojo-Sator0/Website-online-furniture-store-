@@ -68,6 +68,12 @@ def profile(request):
     }
     return render(request,'users/profile.html',context)
 
+def users_cart(request):
+    context={
+        'title':'HOME - Корзина',
+    }
+    return render(request,'users/users_cart.html',context)
+
 @login_required
 def logout(request):
     messages.success(request, 'Вы успешно вышли из системы')
