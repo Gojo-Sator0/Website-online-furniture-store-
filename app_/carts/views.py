@@ -1,12 +1,29 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
+
+from carts.models import Cart
+from goods.models import Products
 
 # Create your views here.
 
-def cart_add(request, product_id):
-    return render(request, 'carts/cart_add.html')
+def cart_add(request, product_slug):
+    product = Products.objects.get(slug=product_slug)
 
-def cart_chance(request, product_id):
-    return render(request, 'carts/cart_chance.html')
+    if request.user.is_authenticated:
+        carts = Cart.objects.filter(user=request.user, product=product)
 
-def cart_remove(request, product_id):  
-    return render(request, 'carts/cart_remove.html')
+        if carts.exists():
+            cart = carts.first()
+            if cart:
+                cart.qty += 1
+                cart.save()
+        
+        else:
+            Cart.objects.create(user=request.user, product=product, qty=1)
+
+    return redirect(request.META.get('HTTP_REFERER'))
+
+def cart_chance(request, product_slug):
+    pass
+
+def cart_remove(request, product_slug):  
+    pass
