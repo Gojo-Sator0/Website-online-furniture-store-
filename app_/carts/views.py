@@ -25,5 +25,9 @@ def cart_add(request, product_slug):
 def cart_chance(request, product_slug):
     pass
 
-def cart_remove(request, product_slug):  
-    pass
+def cart_remove(request, cart_id):  
+
+    cart = Cart.objects.get(id=cart_id)
+    cart.delete()
+    
+    return redirect(request.META.get('HTTP_REFERER'))
