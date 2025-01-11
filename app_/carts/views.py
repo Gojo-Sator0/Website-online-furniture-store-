@@ -40,9 +40,24 @@ def cart_add(request):
 def cart_chance(request, product_slug):
     pass
 
-def cart_remove(request, cart_id):  
+def cart_remove(request):  
+
+    cart_id = request.POST.get('cart_id')
 
     cart = Cart.objects.get(id=cart_id)
+    quantity = cart.qty
     cart.delete()
+
+    user_cart = get_users_carts(request)
     
-    return redirect(request.META.get('HTTP_REFERER'))
+    cart_items_html = render_to_string(
+        'carts/includes/included_cart.html', {'carts': user_cart}, request=request
+    )
+
+    response_data = {
+        'message': 'Товар удален из корзины',
+        'cart_items_html': cart_items_html,
+        'quantity_deleted': quantity,
+    }
+
+    return JsonResponse(response_data)
