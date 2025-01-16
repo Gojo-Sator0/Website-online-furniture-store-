@@ -47,7 +47,7 @@ class Orderitem(models.Model):
     objects = OrderitemQuerySet.as_manager()
 
     def products_price(self):
-        return round(self.price() * self.quantity, 2)
+        return round(self.price * self.quantity, 2)
     
     def __str__(self):
         return f'Товар: {self.name} | Заказ №{self.order.pk}'

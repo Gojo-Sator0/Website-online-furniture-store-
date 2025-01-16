@@ -5,9 +5,10 @@ from carts.models import Cart
 from orders.models import Order, Orderitem
 from orders.forms import CreateOrderForm
 from django.db import transaction
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
-
+@login_required
 def create_order(request):
     if request.method == 'POST':
         form = CreateOrderForm(data=request.POST)
@@ -69,5 +70,6 @@ def create_order(request):
     context = {
         'title': 'HOME - Создание заказа',
         'form': form,
+        'order':True,
     }
     return render(request, 'orders/create_order.html', context=context)
